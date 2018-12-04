@@ -130,49 +130,19 @@ app.get('/ServerlistByProjectGroupID', (req, res)=>{
 })
 
 ///POPULATE METHOD
-
-app.get('/ServerlistUsingGroupByProjectID', (req, res)=>{
-	server1.aggregate([
-        {
-            $group: {
-               _id:{ projectID:"$projectID"},  
-                ServerName: {'$push':'$name'},
-                count: {$sum: 1}
-            }
-        }
-    ], function (err, result) {
-        if (err) {
-            next(err);
-        } else {
-            res.json(result);
-        }
-    });
-
-   server1.populate('projectID').exec(function(err, result) {
-
-	
-if(err){
-	console.log(err);
-}
-
-else{
-	console.log(result);
-}
-
+app.get('/ServerlistByProjectIDProjectGroupIDs', (req, res)=>{
+	server1.find({}).populate('projectID').populate('projectgroupID').exec(function(err, data){
+		if(err){
+			res.send(err);
+			console.log(err);
+		}
+		else{
+			res.send(data);
+			console.log("Done...");
+		}
+	});
 });
-})
 
-
-// app.get('/ServerlistByProjectIDssss', (req, res)=>{
-// 	server1.select("name").populate('projectID').exec(function(err){
-// 		if(err){
-// 			console.log(err);
-// 		}
-// 		else{
-// 			console.log("Done...");
-// 		}
-// 	});
-// });
 
 ///Project 
 
